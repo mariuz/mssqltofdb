@@ -1,0 +1,55 @@
+1.0
+2002.03.07.11.12
+2
+SQL2GDB
+MS SQL and Access To InterBase Wizard
+2002.03.07.11.12
+32
+Welcome to the new MSSQL and Access Migration Wizard
+This new release (#14) includes the following:
+. corrected problem with numeric fields
+. corrected failing to load character sets
+. corrected failing to clear scripts with button
+. browsing for an input file now loads it automatically
+. option to set default values in place of NULLs
+. corrected failing to save/reload name mangling maps
+
+You might also want to take a look at:
+. InterBase Index Checker (IIC) at the 
+IB-Designer Yahoo! group
+. IB Relationship Diagrams (IBRD) at the
+IB-Designer Yahoo! group
+
+Project homepage:
+http://wwww.ibphoenix.com/sql2gdb
+
+You can download the latest release from:
+ftp://209.20.34.21/Windows/sql2gdb.zip or
+http://www.xlprueba.com.ar/ib/sql2gdb.zip
+
+Sources at:
+ftp://209.20.34.21/Windows/source.zip or
+http://www.xlprueba.com.ar/ib/source.zip
+
+The Delphi packages are at:
+http://www.xlprueba.com.ar/ib/delpak5.zip
+
+For support on this tool, contact marcelo.lopezruiz@xlnet.com.ar.
+
+Happy birth-month to everyone born on March!
+IIC
+InterBase Index Checker
+2000.10.05.11.55
+12
+Welcome to the new InterBase Index Checker
+This tool allows you to check InterBase indexes for duplicates,
+and suggests what can be done about them, and what might
+have produced them.
+
+You can get the latest version from IBPhoenix at:
+http://wwww.ibphoenix.com/
+
+It requires Delphi packages, available at:
+http://www.xlprueba.com.ar/ib/delpak5.zip
+
+For support on this tool, contact marcelo.lopezruiz@xlnet.com.ar.

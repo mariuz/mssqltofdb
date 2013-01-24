@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<TITLE>InterBase Software Updates System</TITLE>
+<STYLE>
+body {
+  background-color: 'white';
+  font-family: 'Verdana, Arial';
+  font-size: '9pt';
+}
+</STYLE>
+</HEAD>
+<BODY>
+<H1>InterBase Software Updates System</H1>
+<P>
+This document describes an implementation to update
+InterBase applications over the Internet, enabling
+notifications to be posted at a central site, and
+clients to poll for software updates.
+</P>
+
+<HR>
+<H2>Update Mechanism</H2>
+<P>
+To find out if newer software is available a client
+program should request a document from a well-known
+URL.
+</P>
+
+<P>
+The document should then be parsed by the client
+program, to inform the user about newer releases,
+notifications, and where to obtain them.
+</P>
+
+<P>
+The document has the following format:<PRE>
+
+document  ::= &lt;header&gt;
+              CRLF
+              [(&lt;topic&gt;)]
+
+header    ::= major_version "." minor_version
+              CRLF
+              last_update_date
+              CRLF
+              topic_count
+
+topic     ::= &lt;topic_header&gt;
+              [(&lt;topic_body&gt;)]
+
+topic_header  ::= topic_name
+                  CRLF
+                  topic_description
+                  CRLF
+                  last_update_date
+                  CRLF
+                  body_line_count
+
+topic_body    ::= [(body_line)]
+</PRE></P>
+
+<P>
+<B>major_version</b> is an integer number. Changes
+in this number mean that backward compatibility
+was broken in some way. <B>minor_version</B> is
+an integer number. Changes to this number mean that
+there is extended information, but that older
+clients can still interpret this correctly.
+<B>last_update_date</B> is the date the document last
+updated in any way, in <B>yyyy.mm.dd.hh.nn</B> format.
+<B>topic_count</B> is the number of topics which
+follow the document header.
+</P>
+
+<P>
+<B>topic_name</B> is a short name, which uniquely
+identifies a notification topic. It is typically
+a file name. <B>topic_description</B> is a
+user-friendly description of the notification
+topic. <B>last_update_date</B> is the date of
+the last update issues on this topic, in
+<B>yyyy.mm.dd.hh.nn</B> format. <B>body_line_count</B>
+is the number of lines the body of the topic has.
+</P>
+
+<P>
+The body of the document is a plain-text sequence
+of lines, which are meant for the user to read. Among
+the contents of the body, it is expected that the
+following topics will be addressed:
+</P>
+
+<UL>
+  <LI>Why there is a notification.</LI>
+  <LI>What changes have been made.</LI>
+  <LI>Where can the newer version of the software
+    be obtained.</LI>
+  <LI>Where to ask for further assitance.</LI>
+</UL>
+
+<HR>
+<H2>User Interface Guidelines</H2>
+<P>
+There are two instances in which the software
+updates system should be run: automatically, on
+application startup, and on-demand.
+</P>
+
+<P>
+The automatic startup should be performed silently.
+The application should not connect to the Internet
+if the user isn't already connected. If any errors
+arise, they should be silently discarded. If updates
+to the relevant software are found, then the user
+should be notified in a non-modal window.
+</P>
+
+<P>
+The on-demand scenario occurs when the user
+explicitly requests that updates be checked. Errors
+<B>should</B> be reported. If updates to any software
+are found, then the user should be notified in
+a modal window.
+</P>
+
+</BODY>
+</HTML>

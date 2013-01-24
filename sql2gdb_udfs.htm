@@ -1,0 +1,100 @@
+<HTML>
+<HEAD>
+
+<TITLE>SQL2GDB UDF Discovery</TITLE>
+
+<LINK REL='stylesheet' TYPE='text/css' HREF='ibp.css'>
+
+</HEAD>
+<BODY>
+<H1>SQL2GDB UDF Discovery</H1>
+<P>
+This document describes the user-defined function (UDF)
+discovery mechanism that the <B>MS SQL and Access To InterBase Wizard</B>
+(<B>SQL2GDB</B> for short) uses. This document is meant
+for developrs or administrators who wish to add new
+libraries to the SQL2GDB wizard, troubleshoot migration
+problems, and the terminally curious.
+</P>
+
+<H2>Overview</H2>
+
+<P>
+Before any other step takes place, SQL2GDB enables the user to
+load User-Defined Functions into the database. This
+is done simply by declaring them before any other
+script is executed.
+</P><P>
+Using UDF libraries allows the
+developer to create more complex scripts and have
+additional functionality when developing stored procedures
+and triggers. It also enables SQL2GDB to do some advanced
+tricks, like importing blobs from text files or (in the
+future) enabling advanced features such as mailing and
+scripting on the database server.
+</P>
+
+<H2>Discovery</H2>
+
+<P>
+SQL2GDB has no hardcoded libraries with UDFs to declare
+to the database. Rather, it dynamically inspects
+the directory it runs in, and allows the user to select which
+UDF libraries to declare in one of the customization steps.
+</P><P>
+SQL2GDB will examine the directory from which it is
+executed, listing all files with a <B>sql</B> extension.
+These are candidates for migration.
+</P><P>
+Because an SQL script needs to be executed for each
+function to be imported, a file named
+<CODE><I>library_name</I>_setup.sql</CODE> is expected
+to be found on that same folder. For example, the
+SQL file describing the required SQL statements to
+declare functions from <CODE>MyUDFs.dll</CODE> should
+be named <CODE>MyUDFs_setup.sql</CODE>. This condition
+is enforced to enable later versions of SQL2GDB to
+deploy the libraries as needed.
+</P><P>
+The files with declarations should have the statements one
+after the other, finishing with a semicolon.
+The wizard does not check whether the syntax is correct or
+the files are available, but will detect the server's
+complaint if this is the case.
+</P><P>
+The following listing is used, for example, to import
+some of the FreeUDFLib functions, available from
+<A HREF='ftp://firebird.sourceforge.net/pub/firebird/download/freeudflib.zip'>
+ftp://firebird.sourceforge.net/pub/firebird/download/freeudflib.zip</A>.
+</P>
+
+<P><PRE>
+/* Blob functions */
+
+declare external function f_BlobMaxSegmentLength
+  blob
+  returns integer by value
+  entry_point 'BlobMaxSegmentLength' module_name 'FreeUDFLib.dll';
+
+declare external function f_BlobSegmentCount
+  blob
+  returns integer by value
+  entry_point 'BlobSegmentCount' module_name 'FreeUDFLib.dll';
+
+</PRE></P>
+
+<P>
+In particular, for the FreeUDFLib library, the supplied
+<B>ext_funcs.sql</B> works fine. It should be renamed
+<B>FreeUDFLib_setup.sql</B>, however, to have the
+wizard recognize it. The renamed <B>FreeUDFLib_setup.sql</B>
+file is supplied with this distribution.
+</P><P>
+<B>Important</B>: to be used with InterBase 6, libraries
+should be copied to the <B>UDF</B> directory under the
+installation. They won't run if they are placed anywhere
+else.
+</P>
+
+</BODY>
+</HTML>

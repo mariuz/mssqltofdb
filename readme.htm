@@ -1,0 +1,660 @@
+<HTML>
+<HEAD>
+<TITLE>MS SQL To InterBase Wizard</TITLE>
+<!--
+<STYLE>
+body
+{
+  background: white;
+  font-family: 'Verdana, Arial';
+  font-size: '9pt';
+}
+
+table
+{
+  font-size: '9pt';
+}
+
+td
+{
+  vertical-align: 'top';
+}
+</STYLE>
+-->
+
+<LINK REL='stylesheet' TYPE='text/css' HREF='ibp.css'>
+
+</HEAD>
+<BODY>
+<H1>MS SQL and Access To InterBase Wizard</H1>
+<H2>See You Space Cowboy Edition</H2>
+<P>
+This document describes the <B>Microsoft SQL To InterBase
+Wizard</B>. This wizard is a free, open-source tool to
+migrate MS SQL databases to InterBase databases. It also
+supports migrating <B>Access</B> databases.
+</P>
+
+<P>
+<B>For the latest version</B>, frequently asked questions (FAQ),
+source code, user guide, and how-to scenarios, visit our
+new homesite at <A HREF='http://www.ibphoenix.com/sql2gdb'
+>http://www.ibphoenix.com/sql2gdb</A>.
+</P>
+
+<p>
+Marcelo will be taking a break from the wizard development. For now,
+I cannot say much, but I will keep everyone informed by posting
+some information on my website, <a href='http://www.xlprueba.com.ar/marce/'>over
+here</a>. You will also find development articles, ramblings, and
+personal stuff over there.
+</p>
+
+<H3>Index</H2>
+<P>
+<A HREF='#Packages'>Delphi Packages</A><BR>
+<A HREF='#Enabling_Technology'>Enabling Technology</A><BR>
+<A HREF='#Customizations'>Customizations</A><BR>
+<A HREF='#Identifier_Name_Changes'>Identifier Name Changes</A><BR>
+<A HREF='#Files'>Files</A><BR>
+<A HREF='#Pending'>Pending</A><BR>
+<A HREF='#Contact'>Contact</A><BR>
+<A HREF='#Modification_History'>Modification History</A><BR>
+<A HREF='#Credits'>Credits</A><BR>
+</P>
+
+<HR>
+<A NAME='Packages'><H2>Packages</H2></A>
+<P>
+As of the fifth release, the wizard uses Delphi packages. These
+are files similar to Windows libraries, but are specific to
+Delphi executables. They can be downloaded from, for example,
+<A HREF='http://www.xlprueba.com.ar/ib/delpak5.zip'
+>http://www.xlprueba.com.ar/ib/delpak5.zip</A>. Check the
+<A HREF='http://www.ibphoenix.com/sql2gdb/'>Wizard's hompage</A>
+for a list of resource locators.
+</P>
+
+<P>
+Once you have downloaded this file, you should decompress it
+and place the files in your system folder. If you have Windows
+95/98, this is typically <B>C:\Windows\System\</B>; if you have
+Windows NT/2000, it's <B>C:\WinNT\System32\</B>.
+</P>
+
+<P>The packages used are:</P>
+<UL>
+  <LI>Vcl50.bpl</LI>
+  <LI>Vclx50.bpl</LI>
+  <LI>VclSmp50.bpl</LI>
+  <LI>Vcldb50.bpl</LI>
+  <LI>Vclado50.bpl</LI>
+</UL>
+
+<P>
+Just to show how a good citizen I am, I quoteth from the <B>deploy.txt</B>
+file:<PRE>
+2.2 INPRISE Runtime Packages
+----------------------------
+In accordance with the General Terms That Apply to Compiled
+Programs and Redistributables, you may redistribute
+INPRISE-supplied runtime packages only for the purpose of
+executing application programs created with Delphi. You may
+not modify these packages in any way. By default the
+redistributable runtime packages are installed in the
+\Windows\System directory (for Windows95) or
+\Windows\System32 (for Windows NT).
+
+Although this software may include packages other than
+those listed below, only the packages listed below are
+redistributable.
+
+You may NOT redeploy INPRISE-supplied design-time-only
+packages. You may not recompile or redistribute any
+INPRISE-supplied components or libraries for use by other
+developers.
+
+Packages that you develop may not have the same names as
+INPRISE-supplied packages. If you distribute component
+libraries or other packages, it is recommended that you
+avoid using the default DCLUSR50 package name, since this
+will cause naming conflicts with other developers.
+</PRE>
+</P>
+
+<HR>
+<A NAME='Enabling Technology'><H2>Enabling Technology</H2></A>
+<P>
+The tool is built with <B>Borland Delphi 5</B>, and uses
+<B>ActiveX Data Objects</B> to access the source database,
+and <B>IBExpress</B> component to access the target database.
+These decisions were made because:
+</P>
+<UL>
+  <LI>ADO is what my Operating System, Windows, supports.
+    It also provides connectivity to many databases in
+    a fairly homogenous way.</LI>
+  <LI>IBExpress is what my development tool supports. I
+    know there are many sets of components out there to
+    connect to InterBase (I've even written one myself),
+    but I want to stick with what's standard to encourage
+    outside help on this project.</LI>
+</UL>
+
+<P>
+To all of you who have written components to access InterBase,
+my apologies for being such a wimp. You are, of course, welcome
+to modify the tool to use your own data access components.
+</P>
+
+<HR>
+<A NAME='Customizations'><H2>Customizations</H2></A>
+<P>
+Customizations can be made by the user to any script. If
+all content is deleted, the script does not get executed.
+</P>
+
+<P>
+There are a number of name mappings which can be
+made automatically, to keep compatibilty with InterBase 5.6.
+</P>
+
+<P>
+There are other customizations which can be made; for
+a full explanation, see the <A HREF='user_guide.htm'>User Guide</A>.
+</P>
+
+<HR>
+<A NAME='Identifier_Name_Changes'><H2>Identifier Name Changes</H2></A>
+<P>
+Because Microsoft Access and SQL Server allow identifiers
+to have spaces in them, names sometimes have to be changed.
+The way the names are changed are controlled by the
+<B>MapMethods</B> property of the <B>TNameMap</B> object.
+There are three different methods: <B>mmUnderscores</B>,
+<B>mmRemoveWhiteSpace</B>, and <B>mmUseQuoted</B>.
+The first will replace all spaces with underscores. The
+second will simply remove all whitespace, and leave the
+words one after the other. The last will use quotes around
+the identifier; this would be the ideal solution, but it
+is only supported in InterBase 6+. In the first two cases,
+also, the identifier may be a reserved keyword, in which case
+the suffix <B>Col</B> or <B>Table</B> is appended.
+</P>
+
+<HR>
+<A NAME='Files'><H2>Files</H2></A>
+<TABLE>
+  <TR>
+    <TH>File Name</TH>
+    <TH>Description</TH>
+  </TR></TR>
+    <TD>ADODB_TLB.pas</TD>
+    <TD>This file is the imported type library of the
+      ADO library. This is for you guys out there without
+      <B>ADOExpress</B></TD>
+  </TR></TR>
+    <TD>AdoUtils.pas</TD>
+    <TD>This file is a smaller version of an ADO unit of routines
+      I have. However, my own version uses ADOExpress, so it's
+      not included in this distribution. If you want the whole
+      thing, ask me and I'll post it on CodeCentral.</TD>
+  </TR></TR>
+    <TD>ADOX_TLB.pas</TD>
+    <TD>This file is the imported type library of the
+      ADO Extensions library.</TD>
+  </TR></TR>
+    <TD>Base64Unit.pas</TD>
+    <TD>This file has a routine to encode a binary string into
+      a base64 string, according to RFC 2045. The routine
+      was menat to be used when writing a blob to an output file during
+      migration. Unfortunately, it doesn't work, but I'd like to
+      propose it as an enhancement to the engine.</TD>
+  </TR></TR>
+    <TD>CheckLstUtils.pas</TD>
+    <TD>This unit holds a bunch of check-listbox routines.</TD>
+  </TR><TR>
+    <TD>ConvertInfoUnit.pas</TD>
+    <TD>This unit holds the convertion information object, which is
+      a singleton used throughout the site, residing in the singleton
+      <B>Flow</B> object. This object is  responsible for generating
+      the scripts to be executed, and
+      maintaining information about user input.<BR>
+      The <B>NameMap</B> object, which resides in the <B>ConvertInfo</B>
+      object, is used to manage the mappings generated through
+      identifier mangling for SQL dialect compatibility.</TD>
+  </TR></TR>
+    <TD>CustomizeMigrationFrameUnit.pas</TD>
+    <TD>This frame allows the user to customize the
+      scripts which will be run.</TD>
+  </TR></TR>
+    <TD>CustomizeScriptsFrameUnit.pas</TD>
+    <TD>This frame allows the user to customize some code generation
+      options, like dialect versiona and whether to create generators
+      for autonumber fields.</TD>
+  </TR></TR>
+    <TD>DefaultValuesFormUnit.pas</TD>
+    <TD>This form is used to specify the default values to be used
+      in place of NULLs in the source database. Note that the UI
+      explains the mapping, so it should be updated together with
+      the code.</TD>
+  </TR></TR>
+    <TD>DragDropUnit.pas</TD>
+    <TD>This unit holds the <B>TDropTargetManager</B> component,
+      which is a helper object for OLE drag and drop operations.
+      It can be installed, but it's not embedded as a component
+      so developers don't have to install it in a package.</TD>
+  </TR></TR>
+    <TD>FormsUtils.pas</TD>
+    <TD>This unit holds a bunch of useful form routines.</TD>
+  </TR></TR>
+    <TD>FreeUDFLib_setup.sql</TD>
+    <TD>This file holds the declarations used to automatically
+      declare (duh!) the FreeUDF user-defined functions
+      in the destination database.</TD>
+  </TR></TR>
+    <TD>IBCheckUpdateUnit.pas</TD>
+    <TD>This unit checks for updates on the Internet.</TD>
+  </TR></TR>
+    <TD>IBUpdate.htm</TD>
+    <TD>This file describes the update document format.</TD>
+  </TR></TR>
+    <TD>IBUpdateUnit.pas</TD>
+    <TD>This manages the Internet document used by
+      IBCheckUpdateUnit.pas</TD>
+  </TR></TR>
+    <TD>MainFormUnit.pas</TD>
+    <TD>This is the main form of the project. It manages
+      the navigation buttons.</TD>
+  </TR><TR>
+    <TD>MigrateDBFrameUnit.pas</TD>
+    <TD>This is the last frame, responsible for the
+      feedback during migration. It delegates the work
+      to the flow object.</TD>
+  </TR><TR>
+    <TD>MigrationUnit.pas</TD>
+    <TD>This unit declares the <B>TMigrationManager</B>
+      class, which is responsible for all the pumping,
+      executing the scripts of the <B>TConvertInfo</B>
+      object it is assigned.</TD>
+  </TR><TR>
+    <TD>MLRFileIteratorUnit.pas</TD>
+    <TD>This unit is part of a library of mine with
+      classes and routines. This particular unit
+      holds classes and routines related to the very
+      common task of iterating over filenames.</TD>
+  </TR><TR>
+    <TD>MLRTextColEditorUnit.pas</TD>
+    <TD>This unit holds the fixed-width column editor control.</TD>
+  </TR><TR>
+    <TD>readme.htm</TD>
+    <TD>This file.</TD>
+  </TR><TR>
+    <TD>reserved.txt</TD>
+    <TD>Keywords reserved by InterBase. This is needed
+      when renaming columns or tables.</TD>
+  </TR><TR>
+    <TD>SelectIBFrameUnit.pas</TD>
+    <TD>This frame allows the user to select an
+      InterBase database, specify that an existing one
+      should be overwritten, and specify the user name
+      and password. The defaults are <B>sysdba</B> and
+      <B>masterkey</B>.</TD>
+  </TR><TR>
+    <TD>SelectSourceFrameUnit.pas</TD>
+    <TD>This frame allows the user to select an
+      ADO source for the convertion. The ADO source
+      should be an MS SQL database, but because I
+      plan to extend this wizard for other ADO-enabled
+      databases, this is not enforced.</TD>
+  </TR><TR>
+    <TD>SQL2GDBCmdLineUnit.pas</TD>
+    <TD>This unit is used to handle the wizard-flow
+      when run as a commnad-line utility.</TD>
+  </TR><TR>
+    <TD>SQL2GDBConstsUnit.pas</TD>
+    <TD>This unit holds a number of constants which
+      can be reused throughout the application. They
+      also make localization easier. Not that the
+      wizard is localized, though. But it'd be nice.</TD>
+  </TR><TR>
+    <TD>source.txt</TD>
+    <TD>If this file exists, it will be used to initialize
+      the source connection string.</TD>
+  </TR><TR>
+    <TD>SQL2GDB.dpr</TD>
+    <TD>This is the Delphi project file. It expects all
+      project files to reside in the same folder.</TD>
+  </TR><TR>
+    <TD>sql2gdb_udfs.htm</TD>
+    <TD>This documentation file explain how the wizard
+      uses UDF declaration files.</TD>
+  </TR><TR>
+    <TD>scripthead.sql</TD>
+    <TD>This is a text file which is written as a header when
+      generating a full script; by default, it has a warning
+      for the user to update the system path and set his
+      user name and password.</TD>
+  </TR><TR>
+    <TD>TextDelimiterFrameUnit.pas</TD>
+    <TD>This frame is used to allow the user to select text file
+      delimiters and other options.</TD>
+  </TR><TR>
+    <TD>TextFieldsFrameUnit.pas</TD>
+    <TD>This frame is used to allow the user to set all
+      final details for text files, then save the schema.ini
+      file and close the wizard.</TD>
+  </TR><TR>
+    <TD>TextFormUnit.pas</TD>
+    <TD>This unit holds the main form to host the text schema
+      sub-wizard, and the flow of steps within this
+      sub-wizard.</TD>
+  </TR><TR>
+    <TD>TextModelUnit.pas</TD>
+    <TD>This unit holds the text schema information, some
+      utility routines to work with the text format in the files,
+      and the schema guessing support.</TD>
+  </TR><TR>
+    <TD>TextPreviewFrameUnit.pas</TD>
+    <TD>This frame allows the user to select a text file to
+      define and previews its content.</TD>
+  </TR><TR>
+    <TD>UpdateInfoBuilder\*.*</TD>
+    <TD>New for the <b>Birthday Boy</b> edition, this files
+      are used to create a simple GUI tool to edit the
+      files with update descriptions for the wizard.</TD>
+  </TR><TR>
+    <TD>WelcomeFrameUnit.pas</TD>
+    <TD>This frame simply displays a welcome message, and
+      allows the user to select a previous migration or
+      launch the text schema sub-wizard.</TD>
+  </TR><TR>
+    <TD>WizFlowUnit.pas</TD>
+    <TD>This is the most important unit. It used to hold three classes:
+      <B>TWizardFlow</B> (exposed through the global <B>Flow</B>
+      variable), <B>TConvertInfo</B> and <B>TNameMap</B>. The
+      latter two, however, have been moved into <B>ConvertInfoUnit</B>.<BR>
+      The <B>Flow</B> object is responsible for managing the user interface
+      and lead the user through the steps, triggering certain
+      actions at certain transitions (see the <B>ForwardFrom</B>
+      procedure).</TD>
+  </TR>
+</TABLE>
+
+<HR>
+<A NAME='Pending'><H2>Pending</H2></A>
+<P>
+This is a list of pending changes:
+</P>
+
+<UL>
+  <LI>Use f_StrBLOB or a similar mechanism to import blobs.</LI>
+  <LI>Convert stored procedures, triggers and QueryDefs into
+    InterBase triggers and stored procedures
+    (<I>yeah, right! ;-)</I>).</LI>
+  <LI>Allow the user to select the method for converting
+    boolean data types (currently, a CHAR(1) is being used).</LI>
+  <LI>Migrate field and table descriptions.</LI>
+  <LI>Check COL name appending.</LI>
+  <LI>Pump records to stored procedures.</LI>
+  <LI>Include ability to open SQL script from command-line.</LI>
+  <LI>Enhance the data-type guessing algorithms (specially the
+    date/integer issue).</LI>
+</UL>
+
+<HR>
+<A NAME='Contact'><H2>Contact</H2></A>
+<P>
+To contact me for errors, suggestions or improvements,
+write to <A HREF='mailto:marcelo.lopezruiz@xlnet.com.ar'
+>marcelo.lopezruiz@xlnet.com.ar</A> (Marcelo Lopez Ruiz), <A
+HREF='mailto:tbennet1@tampabay.rr.com'>tbennet1@tampabay.rr.com</A>
+(Todd Bennet), <A HREF=
+'mailto:jan.bakuwel@ams.greenpeace.org'>jan.bakuwel@ams.greenpeace.org</A>
+(Jan Bakuwel), or <A HREF=
+'mailto:hc@descartes.fr'>hc@descartes.fr</A> (Henri Cesbron).
+</P>
+
+<HR>
+<A NAME='Modification_History'><H2>Modification History</H2></A>
+<UL>
+  <LI><B>2002.06.28</B>: Release 16 (See You Space Cowboy Edition). Lotsa changes.<ul>
+    <li>Added FIRST to the list of keywords.</li>
+    <li>Added the capability of configuring dropped text files.</li>
+    <li>Added lots of functionality to create <b>schema.ini</b> files,
+      to be used with the ODBC provider. A gazillon thanks
+      to Andrew Garner again, for providing the initial code.</li>
+    <li>Made the code generation step more forgiving of OLEDB providers
+      with little schema information.</li>
+    <li>Improved name mangling. Now, all identifiers start with an
+      alphabetical character, and empty identifiers after mangling
+      are replaced by an artificial identifier.</li>
+    </ul>
+  </LI>
+  <LI><B>2002.05.02</B>: Release 15. Added support for
+    schedulable files (sorry Bayu I never got back to you - these
+    are hectic days for me). Thanks to Paolo Salvan for many
+    useful suggestions, including the one on optional trigger
+    generation (a new feature). The wizard is smarter now and
+    will correct your options if they don't make sense, telling
+    you why they were corrected. Changed default name mangling
+    to underscores. Added Outlook scripting support in scheduled
+    files (quite primitive, though).
+  <LI><B>2002.03.07</B>: Release 14. Corrected a problem with
+    numeric fields. Thanks to Mauricio and Claudio for bringing
+    this to my attention and helping me with a test case. Fixed
+    problem with character sets not being loaded. Fixed a problem
+    with script modifications not being saved correctly when
+    used with the <b>Clear this script</b> button. Browsing for
+    a script file now loads it automatically. Very many thanks
+    to Andrew Garner, too, for adding the 'soul' of the default
+    value patch. Prefixed the generator names with
+    <code>G_</code>. Now loads and saves
+    the name map together with the script. If you were
+    born on March as I was, happy birth-month!</li>
+  <LI><B>2001.09.21</B>: Release 13. Corrected a problem with
+    generators starting with non-alphanumeric characters
+    (thanks to Tony Tooley for spotting this one). Corrected
+    a problem with pumping data to a script file when using
+    quoted identifiers (thanks to Leo Lemonidis for insisting
+    on this one). And apologies to Peter Nunn, whose problem
+    with ADO I still have not been able to solve, and regards
+    to Craig Stuntz and John Kaster, for wanting to include
+    the wizard in the IB Companion CD.</LI>
+  <LI><B>2001.05.07</B>: Release 12. Corrected a problem with
+    generators and field names with spaces, and problems with
+    GUID in index names when migrating from Access 2000. Special
+    thanks to John Reeve and Woody (so sorry I took so long to
+    update the wizard). There's a problem pending when using
+    different users in MS SQL - thanks to Mark Palladino for
+    his bug report on it. Another important change is that
+    if a file named <B>check_here.txt</B> is found in the
+    directory where the executable is, then the first line
+    is read and used as the HTTP source for updates.</LI>
+  <LI><B>2001.01.04</B>: Eleventh release. Not much to report: ADOExpress,
+    which had been introduced in the code, produced problems when
+    users had MDAC 2.6 installed on their system. Click
+    <A HREF='http://www.borland.com/devsupport/delphi/mdac26.html'>here</A>
+    to see Borland's page on this issue. ADOExpress is gone, and
+    so is the problem. Thanks to Alax Jorge Morais Filho, who helped
+    me troubleshoot this one.
+    </LI>
+  <LI><B>2000.12.20</B>: Tenth release. <B>Merry Christmas to everyone!</B>
+    Special thanks go to Claudio Valderrama who is always providing
+    me with bug reports, suggestions, and general help.
+    In this release, the following changes were made:<UL>
+      <LI>Removed the static dependency on the <B>wininet.dll</B>
+        library. This was due to problems experienced by
+        H. Guscott, who was running NT with service pack 4.
+        I <B>do not</B> intend people to run on something
+        more recent than that. I suspect the problem was
+        with his Internet Explorer version. Anyway, the
+        functions are loaded dynamically, so the program can
+        deal with it gracefully.</LI>
+      <LI>Added a trailing <B>;</B> to all scripts when they
+        are saved in the last step, so they can be executed
+        directly from other tools.</LI>
+      <LI>Added the <B>Interrupt on errors</B> option. See the
+        <A HREF='user_guide.htm'>User Guide</A> for more
+        details.</LI>
+      <LI>Creates folder for files if not on remote server and
+        does not exist already. <B>Be careful</B>: I haven't had
+        the chance to test this very thoroughly. For those
+        who care to take a look at the code, this branch starts
+        at <CODE>MigrationUnit.pas : 162</CODE> of the current release.</LI>
+      <LI>Allow automatic installation of UDF libraries. This is
+        in preparation for BLOB importing from script.</LI>
+    </UL>
+  </LI>
+  <LI><B>2000.10.12</B>: Ninth release. In this release,
+    the following changes were made:<UL>
+      <LI>Removed <B>TIMESTAMP</B> from dialect 1, when
+        it came specified as a generic datetime ADO type.</LI>
+      <LI>Removed all unfriendly characters from identifiers
+        (thanks to Chris Paschen for pointing this one out!).</LI>
+      <LI>Decoupled the convertion and migration units
+        from the wizard flow unit, so they can be reused
+        by other applications. Thanks to Jones Homer,
+        who came up with the idea.</LI>
+      <LI>Added a command-line interface.</LI>
+      <LI>Included better default support - thanks to
+        Pete Morrison, who gave me the details on what
+        was required. Removed a bug of 'sticky' default
+        expressions.</LI>
+      <LI>Fixed problems with too-long trigger names.</LI>
+      <LI>Added support for character sets (thanks to
+        David Lebeda, who came up with the idea.</LI>
+      </UL>
+  </LI>
+  <LI><B>2000.10.02</B>: Eighth release. In this release,
+    the following changes were made:
+    <UL>
+      <LI>Support for GUID (Globally Unique Identifier) data
+        type was added, as a domain or directly defined.</LI>
+      <LI>Index names will be truncated (from the left) to fit
+        (this had to be done by hand previously).</LI>
+      <LI>Ditto for generator names.</LI>
+      <LI>Added support for adLongVarChar data types
+        (huge oversight of mine).</LI>
+      <LI>You can now re-import scripts that were saved in the
+        last step, so you don't have to re-enter all information
+        and customizations.</LI>
+      <LI>You can select which tables you want to migrate,
+        instead of moving the whole thing. For now, this is
+        the only way to distinguish tables from select-only
+        queries or views.</LI>
+      <LI>Changed <B>click here for updates</B> to <B>click
+        above</B>.</LI>
+      <LI>You can go back after making changes to scripts, and
+        the wizard will ask you whether you want them re-created.</LI>
+      <LI>Added feedback during generation.</LI>
+      <LI>Corrected some problems with <B>DEFAULT</B> expressions.
+        Be wary, though - there are still some bugs hanging about.</LI>
+      <LI>Removed <B>TIMESTAMP</B> from the available datatypes
+        with dialect 1.</LI>
+      <LI>Included prompts on overwriting script files.</LI>
+    </UL>
+    <P>Extra-special thanks go to the <A HREF='http://www.ibphoenix.com'
+      >IBPhoenix</A> team, who have given us space on their server to
+      host a homepage.</P>
+  </LI>
+  <LI><B>2000.09.26</B>: Seventh release. In this release,
+    the following changes were made:
+    <UL>
+      <LI>A bug with the <B>NULL</B> clause was fixed.</LI>
+      <LI>You can drag and drop Jet security files (with <B>mdw</B>
+        extension) and have the connection string modified to
+        support them.</LI>
+      <LI>You can drag and drop a text file on the connection
+        source area and have the connection loaded from it.</LI>
+      <LI>The kind of files you can drop on the text area of
+        the source frame are hinted at.</LI>
+      <LI>There is feedback during scripting.</LI>
+      <LI>The source information can be saved as a default.</LI>
+      <LI>Detecting empty tables with AutoNumber fields has been
+        improved.</LI>
+      <LI>The error report can be saved to a text file.</LI>
+      <LI>Improved bugs when using quoted identifiers for keys
+        and indexes (warning: the errors were <B>very</B> misleading,
+        saying, e.g., that keys could not be created because no
+        unique index was found when the problem was that the
+        column identifiers were not being quoted).</LI>
+      <LI>The source files are now included in another <B>zip</B>
+        file.</LI>
+    </UL>
+  </LI>
+  <LI><B>2000.09.19</B>: Sixth release. This release, code-named
+    Claudio Edition, checks for updates in a secondary thread
+    when not requested by the user, and checks for MS SQL
+    DEFAULT expressions.
+  </LI>
+  <LI><B>2000.09.14</B>: Fifth release. This release was specifically
+    done to enable pumping to populate an (already) existing database.
+    In all likelihood, a new tool will come along soon enough to
+    make this easier. Thanks to Gerald S. Brown for the feedback!<BR>
+    The following changes were made:
+    <UL>
+      <LI>You can now ask the wizard to use an existing database.</LI>
+      <LI>You can ask the wizard to skip metadata scripts (which
+        is just a handier way than to erase them by hand).</LI>
+      <LI>The wizard now uses Delphi packages, which greatly
+        reduces the size of the executable.</LI>
+    </UL>
+  </LI>
+  <LI><B>2000.09.11</B>: Fourth release. The following changes were made:
+    <UL>
+      <LI>The wizard will check for updates on startup. The whole
+        automatic update scheme was developed. All other developers
+        are <strong>strongly</strong> encouraged to use it.</LI>
+      <LI><B>Numeric, Byte</B> fields in Access are correctly
+        managed.</LI>
+      <LI>The generator was off by one. This has been corrected.</LI>
+      <LI>Migrating tables with AutoNumber or IDENTITTY fields
+        and no records produced an error. This has been corrected.</LI>
+    </UL>
+  </LI>
+  <LI><B>2000.09.04</B>: Third release. The following changes were made:
+    <UL>
+      <LI>The fields are created in the correct order, instead
+        of ADOX's alphabetical ordering.</LI>
+      <LI>The data pumping is wrapped in a transaction, which makes
+        it run faster.</LI>
+      <LI>Access's AutoNumber gets migrated as an INTEGER with a
+        Generator set on a BEFORE trigger.</LI>
+      <LI>Ditto MS SQL's IDENTITY.</LI>
+    </UL>
+  </LI>
+  <LI><B>2000.08.30</B>: Second release. The following changes were made:
+    <UL>
+      <LI>You can drag an Access file to the <B>Source Database</B>
+        edit box and it sets it up for you.</LI>
+      <LI>Fixed an inversion of numeric scale and precision.</LI>
+      <LI>Allows output to be redirected to a file.</LI>
+      <LI>When saving the scripts, things like the file header and
+        section references are commented. The scripts are saved
+        with a trailing semicolon, to use them in <B>isql</B>. You
+        can customize the header by editing <B>scripthead.sql</B>.</LI>
+      <LI>The saved script header was changed from <B>Access wizard</B>
+        to <B>MS SQL wizard</B>.</LI>
+    </UL>
+  </LI>
+  <LI><B>2000.08.29</B>: First release.</LI>
+</UL>
+
+<HR>
+<A NAME='Credits'><H2>Credits</H2></A>
+<P>
+The MS SQL and Access To InterBase Wizard was brought to you by:
+</P>
+<UL>
+  <LI>Bakuwel, Jan</LI>
+  <LI>Bennet, Todd</LI>
+  <LI>Cesbron, Henri</LI>
+  <LI>Garner, Andrew</LI>
+  <LI>Lopez Ruiz, Marcelo</LI>
+  <LI>Valderrama, Claudio</LI>
+  <LI>Woody</LI>
+</UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,1 @@
+sql2gdb C:\BugTrack\sql.sql

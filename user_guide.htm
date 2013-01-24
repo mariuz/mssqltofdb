@@ -1,0 +1,599 @@
+<HTML>
+<HEAD>
+<TITLE>Microsoft SQL And Access To InterBase Wizard</TITLE>
+<LINK REL='stylesheet' TYPE='text/css' HREF='ibp.css'>
+</HEAD>
+<BODY>
+<H1>Microsoft SQL And Access To InterBase Wizard</H1>
+<H1>User Guide</H1>
+<P>
+This document is a short user guide for the <B>Microsoft
+SQL And Access To InterBase Wizard</B>.
+</P>
+
+
+<H2>Index</H2>
+<P>
+<A HREF='#Overview'>Overview</A><BR>
+<A HREF='#Installation'>Installation</A><BR>
+&nbsp;&nbsp;<A HREF='#How to get the Wizard'>How to get the Wizard</A><BR>
+&nbsp;&nbsp;<A HREF='#What to download'>What to download</A><BR>
+&nbsp;&nbsp;<A HREF='#Setup Instructions'>Setup Instructions</A><BR>
+<A HREF='#Using the Wizard'>Using the Wizard</A><BR>
+&nbsp;&nbsp;<A HREF='#Step1'>Step 1: Welcome</A><BR>
+&nbsp;&nbsp;<A HREF='#Step2'>Step 2: Select Source Database</A><BR>
+&nbsp;&nbsp;<A HREF='#Step3'>Step 3: Select InterBase Database</A><BR>
+&nbsp;&nbsp;<A HREF='#Step4'>Step 4: Customize Migration</A><BR>
+&nbsp;&nbsp;<A HREF='#Step5'>Step 5: Customize Migration</A><BR>
+&nbsp;&nbsp;<A HREF='#Step6'>Step 6: Migrate Database</A><BR>
+<A HREF='#Tutorial: Migrating Northwind'>Tutorial: Migrating Northwind</A><BR>
+<A HREF='#HOWTO: Migrate text files'>HOWTO: Migrate text files</A><BR>
+<A HREF='#HOWTO: Migrate only certain records'>HOWTO: Migrate only certain records</A><BR>
+<A HREF='#HOWTO: Schedule migrations'>HOWTO: Schedule migrations</A><BR>
+<A HREF='#Where to go for support'>Where to go for support</A><BR>
+</P>
+
+<HR>
+<A NAME='Overview'><H2>Overview</H2></A>
+<P>
+The Microsoft SQL And Access To InterBase Wizard (<B>Wizard</B>
+for short, code-named <B>sql2gdb</B>), is a Windows-only application
+which can aid user migrate databases from Microsoft SQL (<B>MSSQL</B>)
+and Access (also referred to as <B>Jet</B>).
+</P>
+
+<P>
+Because the Wizard uses a generic data-access layer (<B>ActiveX
+Data Objects</B>, or ADO), it can also migrate databases from
+other sources, such as Oracle or Paradox. However, the database
+this Wizard supports explicitly are MSSQL and Jet.
+</P>
+
+<P>
+The Wizard has a number of customizable options, and can generate
+scripts which can be modified freely by the end-user, and saved
+to be executed at a later time.
+</P>
+
+<HR>
+<A NAME='Installation'><H2>Installation</H2></A>
+<A NAME='How to get the Wizard'><H3>How to get the Wizard</H3></A>
+<P>
+Presently, the Wizard is residing at IBPhoenix (<A HREF=
+'http://www.ibphoenix.com/'>http://www.ibphoenix.com</A>). From
+here, you can download the latest updates on software,
+documentation and support.
+</P>
+
+<A NAME='What to download'><H3>What to download</H3></A>
+<P>
+There are three files for downloading, depending on what you
+already have installed on your system:
+</P>
+<UL>
+  <LI><B>del5_pak.zip</B>: this compressed file holds a
+    set of <B>Delphi 5</B> shared packages. If you have
+    <B>Delphi 5</B>, Enterprise Edition, then you
+    don't need them.</LI>
+  <LI><B>sql2gdb.zip</B>: this compressed file holds the
+    executable Wizard and some accompanying files which
+    enable some special Wizard features. This file requires
+    that Borland Delphi 5 Packages be
+    installed in the system.</LI>
+  <LI><B>sql2gdb_src.zip</B>: this compressed file holds
+    all the files required to build the Wizard. The
+    Wizard is developed on Delphi 5, Enterprise Edition,
+    but it can be built with the Professional Edition,
+    too.</P>
+</UL>
+
+<A NAME='Setup Instructions'><H3>Setup Instructions</H3></A>
+<P>
+To setup the Delphi 5 Packages, uncompress the file
+using WinRAR or WinZip into a temporary folder, and
+then copy them to your system folder. If you have
+Windows 95/98/Me, you should copy them to:
+</P>
+<P><CODE>C:\Windows\System</CODE></P>
+<P>
+If you have Windows NT/2000, copy them to:
+</P>
+<P><CODE>C:\WinNT\System32</CODE></P>
+
+<P>
+To setup the Wizard, uncompress the file into
+any folder. The Wizard can be run by double-clicking
+on the <B>sql2gdb.exe</B> icon.
+</P>
+
+<HR>
+<A NAME='Using the Wizard'><H2>Using the Wizard</H2></A>
+<P>
+The Wizard will guide you through a number of steps. Each
+step has a clearly-defined purpose, and help is provided
+at each step to get you through. The Wizard was designed
+to be able to run to completion by clicking repeatedly
+on the <B>Next</B> button on every step except the
+last, which is completed by a click on the <B>Migrate</B>
+button.
+</P>
+
+<P>
+The Wizard can be run by double-clicking on the
+<B>sql2gdb.exe</B> icon, which should be in the
+folder in which you uncompress the <B>sql2gdb.zip</B> file.
+</P>
+
+<A NAME='Step1'><H3>Step 1: Welcome</H3></A>
+<P>
+This step simply welcomes you to the Wizard, and explains
+its purpose. If you are connected to the Internet when
+you run the application, the Wizard will check whether
+there is an update available. If you wish to trigger
+this manually (because you want to connect, or because
+you were not connected when you launched the Wizard),
+you can do this by clicking on the Firebird picture.
+</P>
+
+<P>
+If you have run the Wizard before, and you chose to
+save your script in the last step, then you can
+re-load it into the Wizard. Clicking through it
+will take you every step of the way, and you will
+not lose any changes.
+</P>
+
+<P>
+To load a previously saved script, click on the
+<B>Browse...</B> button, select your SQL script file,
+and then click the <B>Load script</B> button.
+</P>
+
+<p>
+If you would like to migrate files from plain text files, you
+might want to read the
+<A HREF='#HOWTO: Migrate text files'>HOWTO: Migrate text files</A>
+section.
+</p>
+
+<A NAME='Step2'><H3>Step 2: Select Source Database</H3></A>
+<P>
+This step allows you to select a data source. A data source
+is where the data to be migrated will be taken from.</P>
+
+<P>
+What you are supposed to fill in here is what is know as a
+<B>connection string</B>. A connection string specifies
+which library will provide the information (Jet, MSSQL, ODBC,
+or other), and any additional information that provider might
+require to connect. If you are familiar with your provider's
+connection string syntax, you can just type it in.</P>
+
+<P>
+Because this is a pain in the neck, there are many other
+ways to select a data source:
+</P>
+<UL>
+  <LI><B>Default</B>: by default, the connection string
+    will be loaded from <B>source.txt</B>. You can edit this file
+    with any text editor. You can also save the
+    contents of the text area into this file by
+    clicking on the <B>Save as default</B> button.</LI>
+  <LI><B>Drag and drop</B>: if you drag a Jet database from
+    Windows Explorer or the Desktop onto the text area,
+    the Wizard will set up the connection string for you.
+    Likewise, if you drag a Jet group security file (with
+    <B>mdw</B> extension) onto the text area, the additional
+    required strings will be inserted.</LI>
+  <LI><B>Provider-specific</B>: if you click on the
+    <B>Build...</B> button, then a Provider-specific dialog
+    box will appear, which will allow you to select the
+    provider information. If you delete the connection string
+    before hitting this button, then you will also be able
+    to select the desired provider.</LI>
+</UL>
+
+<A NAME='Step3'><H3>Step 3: Select InterBase Database</H3></A>
+<P>
+In this step, you enter information about the InterBase
+database you wish to migrate the data to, or whether
+you want to redirect the whole thing to a script file.
+</P>
+
+<P>
+To create a new database, click on the <B>Browse...</B>
+button. If you select an existing database, you can
+either delete it and recreate it (by checking <B>Delete
+the existing database (if any).</B>, which will not
+complain if there is no database), or you can migrate
+data into it (by checking <B>Use existing.</B>).
+</P>
+
+<P>
+Either way, you will need to specify a <B>user name</B> and
+<B>password</B>; the defaults are those declared in the
+documentation, and there is no need to change them unless
+you have explicitly changed the password.
+</P>
+
+<P>
+If you want to skip all these steps, and just send
+the migration to a text file you can later run from
+the command-line, check <B>Yes, I want to migrate the
+database to a file.</B>, and select an SQL script file.
+</P>
+
+<P>
+<B>Warning</B>: when directing output to a file, certain
+data may be lost, such as <B>BLOBs</B> and <B>binary</B> fields.
+</P>
+
+<A NAME='Step4'><H3>Step 4: Customize Migration</H3></A>
+<P>
+For simple migrations, there is no need to change anything
+in this step. You can simply proceed by clicking <B>Next &gt;</B>.
+The Wizard will generate all scripts, giving feedback about
+its current activity.
+</P>
+
+<P>
+For a large number of migrations, however, you <B>may</B>
+want to customize the way the Wizard behaves.
+</P>
+
+<TABLE BORDER='1'>
+  <TR>
+    <TH>Option</TH>
+    <TH>Description</TH>
+  </TR><TR>
+    <TD><B>Use dialect 3.</B></TD>
+    <TD>If you check this box, the Wizard will use
+      DATE, TIME and TIMESTAMP fields to correctly emulate
+      those found in the source system. It will also
+      enable the use of quotes for naming identifiers.
+      Lastly, it will keep your breath fresh and prevent
+      tooth decay. Unless you need to migrate to
+      InterBase 5.6, there is really no reason why
+      you should uncheck it.</TD>
+  </TR><TR>
+    <TD><B>Migrate autonumeric fields.</B></TD>
+    <TD>If you check this box, the Wizard will
+      create a generator for IDENTITY fields in SQL Server
+      and AutoNumber fields in Jet. It will also create
+      a trigger to assign a new value to the field.</TD>
+  </TR><TR>
+    <TD><B>Skip metadata.</B></TD>
+    <TD>If you check this box, all metadata generation
+      scripts will be skipped. This is useful when
+      you already have an existing database structure,
+      and you want simply to move the information.</TD>
+  </TR><TR>
+    <TD><B>Skip triggers.</B></TD>
+    <TD>If you check this box, then triggers will
+      not be created to auto-assign values from
+      generator into the AutoNumber field.</LI></TD>
+  </TR><TR>
+    <TD><B>Create GUID domain.</B></TD>
+    <TD>If you check this box, a script will be
+      generated to create an InterBase domain which
+      can handle Globally Unique Identifiers.</TD>
+  </TR><TR>
+    <TD><B>Interrupt on errors.</B></TD>
+    <TD>If you check this box, if any errors arise
+      during the migration, a message box will be
+      displayed with the error and migration will
+      stop. Otherwise, migration continues and
+      all errors are shown on a text box after
+      all scripts are executed.</LI></TD>
+  </TR><TR>
+    <TD><B>Name map method</B></TD>
+    <TD>Because the naming constraints for identifiers
+      are very different in MS SQL, Jet and InterBase,
+      there is usually an intermediate step, called
+      <B>name mapping</B> or <B>name mangling</B>,
+      which assigns an InterBase-friendly name to
+      each source field and table identifier. There
+      are currently three methods in which this
+      assignment takes place:
+      <OL>
+        <LI><B>Use quotes.</B> This will preserve
+          all whitespace, by surrounding identifiers
+          with quotes. It is only available for
+          InterBase 6+, using dialect 3.</LI>
+        <LI><B>Use underscores.</B> This will
+          change InterBase-unfriendly characters,
+          like white space, into underscores.</LI>
+        <LI><B>Remove whitespace.</B> This will
+          simply remove all white space. It yields
+          shorter fields, but it can be harder
+          to read.</LI>
+      </OL>
+    </TD>
+  </TR><TR>
+    <TD><B>Character Set</B></TD>
+    <TD>If you do not select anything, the default
+      character set, NONE, will be used. You can
+      either type a character set name or select
+      one from the drop-down list to override
+      this.</TD>
+  </TR><TR>
+    <TD><B>Select Tables</B></TD>
+    <TD>If you do not press this button, by default,
+      all tables as reported by the source will
+      be migrated. If you wish to migrate only
+      <B>some</B> of the tables, you can click
+      this button, and then select from a list
+      with check boxes.</TD>
+  </TR><TR>
+    <TD><B>Select UDF Libraries</B></TD>
+    <TD>If you do not press this button, by default,
+      no UDF libraries will be declared. If you
+      click this button, all available UDF libraries
+      with declarations will be presented, and you
+      can choose which declarations to migrate.
+      UDF declarations are the first things declared,
+      so you can use them later on during data
+      pumping. For more information on this
+      feature, see the <A HREF='sql2gdb_udfs.htm'
+      >SQL2GDB UDF Discovery</A> document.</TD>
+  </TR><TR>
+    <TD><B>Select Defaults</B></TD>
+    <TD>This button will present you with a form
+      to enter default values for different fields.
+      The fields are assigned the specified values
+      when the source database has a NULL. The
+      dialog shows how to specify field names. You
+      can load from/save to a text file to keep
+      an external reference (the encoding in the
+      .sql file is rather cryptic). You can also
+      drag a file on the grid to load it.</TD>
+  </TR>
+</TABLE>
+
+<A NAME='Step5'><H3>Step 5: Customize Migration</H3></A>
+<P>
+In this step, all scripts have already been generated.
+You can usually continue by clicking <B>Next &gt;</B>, but
+you might also find it interesting to review the
+scripts generated.
+</P>
+
+<P>
+To change the contents of any script, simply select it
+and edit its contents. To erase a script, select it
+and erase all its contents - it will not erase the
+item from the list, but nothing will be executed.
+</P>
+
+<A NAME='Step6'><H3>Step 6: Migrate Database</H3></A>
+<P>
+In this step, you can simply click the <B>Migrate</B>
+button to execute all scripts. The Wizard will then
+run all of them, informing you of its progress.
+</P>
+
+<P>
+Before or after the migration, you can save the
+generated scripts to an SQL script file by clicking
+<B>Save scripts...</B>. The script will also include,
+in its first lines, a number of attributes, which
+enable the Wizard to recreate all options and
+customization which were made. If you save the
+script file, the wizard will ask you whether you
+want it to generate additional files, placed in the
+same directory, to schedule the migration script.
+</P>
+
+<P>
+<B>Security Warning</B>: by default, the password
+you entered is saved along the script file, together
+with all other attributes, in plain text. Make sure
+you keep the file safe.
+</P>
+
+<P>
+If there were any errors, they will be displayed
+in a box, and a button will appear, to enable you
+to save them to a text file and analyze its contents.
+</P>
+
+<P>
+Lastly, you can click the <B>Finish</B> button to
+close the Wizard. Congratulations!
+</P>
+
+<HR>
+<H2><A NAME='Tutorial: Migrating Northwind'>Tutorial:
+  Migrating Northwind</A></H2>
+<P>
+This section of the user guide is still under construction. Thanks
+for your understanding.
+</P>
+
+<HR>
+<A NAME='HOWTO: Migrate text files'><H2>HOWTO: Migrate text files</H2></A>
+<p>
+The latest version of the wizard includes a sub-wizard (ugh) to
+prepare <b>schema.ini</b> files. These files allow the Text ODBC driver
+to recognize the format in the text files and in turn, allow the
+wizard to migrate them.
+</p><p>
+There are two important steps to consider. First, the welcome screen
+allows you to launch the sub-wizard. Second, when you drag a file
+in the source selection step, note that the driver will try to read
+<b>all</b> candidate text files. You will probably want to select
+only the files with real data to migrate.
+</p><p>
+Now, on to using the sub-wizard. The first step allows you to
+select a text file to configure. If you need to migrate more than
+one file, you can run this wizard repeatedly.
+</p><p>
+The second step allows you to configure some global properties of the
+text file, such as the data layout and fields. The fixed-width column
+layout is quite simple to use - note that, by default, the whole
+file is selected as a single field.
+</p><p>
+The third step shows you the fields, with the wizard's guess on what
+kind of data is there. Currently, the wizard confuses most integers
+with dates. Anyway, you can pretty much include any kind of information here.
+You can then click <b>Save</b> to save the <b>schema.ini</b> file, and then
+click <b>Finish</b> to close this wizard.
+</p><p>
+One last thing to take into account is that there are some additional
+properties (like date format) that the sub-wizard simply is not managing
+at the moment. You can always edit the <b>schema.ini</b> file with a
+regular text editor, such as Notepad or <a href='http://www.textpad.com/'>TextPad</a>.
+The file format is described
+<a href='http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/odbcjetschema_ini_file.asp'>in this page</a>.
+</p>
+
+
+<HR>
+<A NAME='HOWTO: Migrate only certain records'><H2>HOWTO: Migrate
+  only certain records</H2></A>
+<P>
+By default, the wizard will try to migrate all the records in
+the tables you select. If you wish to migrate only certain records,
+on the other hand, you will need some trickery:</P>
+<OL>
+  <LI>Hack the wizard, hard-code the query -- not the
+    most portable or desirable, but certainly
+    open-source-happy, or</LI>
+  <LI>Create a view for MS SQL, or a select QueryDef in
+    Access.</LI>
+</OL>
+
+<P>
+For example, suppose we have the following schema:
+</P>
+<P><CODE>
+create table employees (<BR>
+&nbsp;&nbsp;emp_no integer not null primary key,<BR>
+&nbsp;&nbsp;emp_first_name varchar(64) not null,<BR>
+&nbsp;&nbsp;emp_last_name varchar(64) not null,<BR>
+&nbsp;&nbsp;salary numeric(6,2) not null<BR>
+)
+</CODE></P>
+
+<P>
+If we want to migrate only employees who earn less
+than $1,500, we create a table using the QueryDef
+Wizard in Access, or with the following T-SQL
+statement in MSSQL:
+</P>
+<P><CODE>
+CREATE VIEW emp_view_move AS<BR>
+SELECT *<BR>
+FROM employees<BR>
+WHERE salary &lt; 1500
+</CODE></P>
+
+<P>
+Then, when we run the wizard, we need only
+select <CODE>emp_view_move</CODE> instead of <CODE>employees</CODE>,
+and the desired records will be migrated.
+</P>
+
+TODO: Check whether cols need to be renamed.
+
+<HR>
+<A NAME='HOWTO: Schedule migrations'><H2>HOWTO: Schedule migrations</H2></A>
+<P>
+There are numerous scenarios in which scheduling migrations
+can be useful. For example:
+</P>
+<UL>
+  <LI>You have an on-line database which is frequently updated,
+    and you wish to periodically create a small InterBase
+    database with recent changes, for logging.</LI>
+  <LI>You have a remote database, and you wish to synchronize
+    your local databases with it; you can schedule every four
+    hours for the remote database to send you a compressed, backed-up
+    InterBase version of it.</LI>
+  <LI>You have a lot of users doing simple data entry through
+    Access forms, and you wish to move the data to an InterBase
+    server for analysis.</LI>
+  <LI>You have a system working on Windows, and you need
+    to provide data to a Linux system every two hours.</LI>
+</UL>
+
+<P>
+In all the above scenarios, you can create a scheduled task
+on the computer with Access or MS SQL, using the <B>Task Scheduler</B>
+service in Windows NT/2000 or the <B>Scheduled Tasks</B> folder in
+Windows 95/98/Me.
+</P>
+
+<P>
+This HOWTO will show you how to create a simple batch file
+which can get the job done simply and efficiently. <b>Note that
+as of release 2002-05-02, the Wizard will create skeleton files
+for you if you save your script.</b>
+</P>
+
+<P>
+First, you need to run the migration wizard once. Suppose we
+take the <B>dbdemos.mdb</B> file which comes with many Borland
+products - you may find this database in <CODE>C:\Program Files\Common
+Files\Borland Shared\Data\dbdemos.mdb</CODE>. Select as a destination
+database <B>c:\dbdemos.gdb</B>. Save the generated
+script to <B>C:\sql.sql</B>.
+</P>
+
+<P>
+Notice that if you click <B>Migrate</B> in the last step, you will
+get two errors. They can be corrected in the generated script, but
+because we are migrating from a database we know to be consistent,
+they an be removed from our checks. This is typically done when
+you will not be updating the database.
+</P>
+
+<P>
+To remove the useless constraints, open C:\sql.sql with <B>Notepad</B>
+or your favorite text editor, and remove the last entries, beginning
+with <B>/* KEY ...*/</B> comments.
+</P>
+
+<P>
+Now, create a batch file, again using Notepad if you will. Name this
+file <B>C:\bat.bat</B>. Assuming that you have installed the wizard
+in <B>C:\Projs\sql2gdb</B>, write the following into the batch file:
+</P>
+
+<P><CODE>
+@echo off<BR>
+rem Migrate the database<BR>
+echo Migrating database....<BR>
+c:\Projs\sql2gdb\sql2gdb.exe c:\sql.sql<BR>
+<BR>
+rem Zip (or RAR, if you will) the output file<BR>
+echo Compressing file....<BR>
+SET PATH=%PATH%;C:\Program Files\WinRAR<BR>
+rar a dbdemos.rar dbdemos.gdb<BR>
+<BR>
+rem Remove the following line if this will be scheduled.<BR>
+pause<BR>
+</CODE></P>
+
+<P>
+After you have finished this, you can use a VBScript file, for example,
+to automate Outlook and send you the database by email. If you need
+help doing this, contact me at <A HREF='mailto:marcelo.lopezruiz@xlnet.com.ar'
+>marcelo.lopezruiz@xlnet.com.ar</A>. There is an article I will publish
+soon in <a href='http://www.xlprueba.com.ar/marce/'>my homepage</a>;
+you might want to bookmark it and check it about once a month.
+</P>
+
+<HR>
+<A NAME='Where to go for support'><H2>Where to go for support</H2></A>
+
+<P>
+There is no formal support for this tool. However, you
+can e-mail any of the developers who have given me permission
+to publish their addresses, found in <A HREF='readme.htm'>readme.htm</A>
+file, or you can submit your questions on the IBConversions e-group
+(the homepage is <A HREF='http://www.egroups.com/IBConversions/'>here</A>).
+</P>
+
+</BODY>
+</HTML>

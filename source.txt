@@ -1,0 +1,4 @@
+Provider=Microsoft.Jet.OLEDB.4.0;
+Password="";
+Data Source=C:\BugTrack\BugTrack.mdb;
+Persist Security Info=True;
